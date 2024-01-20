@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 bg-secondary-theme shadow-effect">
+            <h3 class="text-center  text-theme-primary">New Categories</h3>
+            <p class="text-center mb-5 text-theme-primary" >You Can add new categories here..!</p>
+
+            <form action="" class="form-inline rext-center" #categoryForm='ngForm' (ngSubmit)="onSubmit(categoryForm)">
+                <div class="row">
+                    
+                <div class="col-md-10" >
+                    <input type="text" 
+                    class="form-control shadow-effect mb-5" 
+                    placeholder="add new category" 
+                    #newCategory="ngModel" name="category"
+                    ngModel
+                    required
+                    [ngClass]="{ 'is-invalid':newCategory.touched && newCategory.invalid}"
+                    >
+                    <div class="alert alert-danger" *ngIf="newCategory.touched && newCategory.invalid">
+                        Category field is required
+                    </div>
+                </div>
+                <div class="col-md-2 ">
+                    <button class="btn btn-block btn-info mb-5 btn-theme" [disabled]="newCategory.invalid">Add Category</button>
+                </div>
+                </div>
+            
+        </form>
+        </div>
+    </div>
+</div>
