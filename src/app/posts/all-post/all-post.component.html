@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-effect bg-secondary-theme">
+                <div class="card-body text-center">
+                    <h3 class="text-theme-center">All Blog</h3>
+                    <p>You can manage your all posts ..!</p>
+                    <button class="btn btn-info btn-theme" routerLink="/posts/new">Add New Post</button>
+                    <button class="btn  btn-warning ms-2 btn-theme" routerLink="/">Back To Dashboard</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card shadow-effect">
+                <div class="card-body">
+                    <table class="table row-border hover ">
+                            <thead>
+                                <th>No</th>
+                                <th>PostImage</th>
+                                <th>Title</th>
+                              
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let post of postArray;let i = index">
+                                    <td [width]="10">{{i  +1 }} </td>
+                                    <td [width]="200"><img src="{{post.data.postImgPath}}" alt="" class="img img-fluid "></td>
+                                    <td [width]="200">{{post.data.title}}</td>
+                                    <td>{{post.data.category.category}}</td>
+                                    <td>{{post.data.createdAt.toMillis() | date}}</td>
+                                    <td><button class="btn btn-sm btn-warning" [routerLink]="['/posts/new']" routerLinkActive="router-link-active" [queryParams]="{id:post.id}" >Edit</button>
+                                    <button class="btn btn-sm btn-danger ms-1" (click)="onDelete(post.data.postImgPath,post.id)">Delete</button>
+                                    <button class="btn btn-sm btn-success ms-1" *ngIf="!post.data.isFeatured" (click)="onFeatured(post.id,true)" >Mark Featured</button>
+                                    <button class="btn btn-sm btn-info ms-1" *ngIf="post.data.isFeatured" (click)="onFeatured(post.id,false)">Remove Featured</button>
+
+                                </td>
+                                </tr>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,39 +1,50 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore} from '@angular/fire/compat/firestore';
+import { CategoriesService } from '../services/categories.service';
+import { Category } from '../models/category';
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
 export class CategoriesComponent implements OnInit {
-  categoryData!:any;
+delete(id: any) {
+  this.service.deleteData(id);
+}
+formCategory:string='';
+formStatus:string='Add';
+categoryId:any;
+  update(category : any,id:any) {
+  this.formCategory=category;
+  this.formStatus='Edit';
+  this.categoryId=id;
+}
   
-  constructor(private firestore:AngularFirestore){}
+  categoryArray: Array<any> = [];
+  constructor(private service : CategoriesService){}
 
   ngOnInit(){
-
+      this.service.loadData().subscribe(
+        val => {
+          console.log(val);
+          this.categoryArray=val;
+        }
+      );
   }
 
   onSubmit(categoryForm:any){
     
-    let categoryData = {
+    let categoryData:Category = {
       category: categoryForm.value.category
     }
-    let subcategoryData = {
-      subcategory: 'sub1'
+    if(this.formStatus =='Add'){
+      this.service.saveData(categoryData);
+
     }
-
-    this.firestore.collection('categories').add(categoryData).then(docref => 
-      {
-        console.log(docref);
-        this.firestore.collection('categories').doc(docref.id).collection('subcategories').add(subcategoryData).then(docref1=>{
-          console.log(docref1);
-          this.firestore.collection('categories').doc(docref.id).collection('subcategories').doc(docref1.id).collection('subsubcategories').add(subcategoryData).then(docref2 =>{
-            console.log(docref2);
-          });
-        })
-      })
-      .catch(err => console.log(err));
-
+    else{
+      this.service.updateData(this.categoryId,categoryData);
+      categoryForm.reset();
+    }
+    categoryForm.reset();
+    
   }
 }
